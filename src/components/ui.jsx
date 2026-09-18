@@ -2,14 +2,6 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Inbox, LoaderCircle, ShieldAlert, X } from "lucide-react";
 
-export const dateLabel = (value) =>
-  new Intl.DateTimeFormat("es-CO", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(value));
-export const roleLabel = (role) =>
-  role === "admin" ? "Administrador" : "Estudiante";
 export function Badge({ children }) {
   const colors = {
     Pendiente: "amber",

@@ -8,15 +8,15 @@ import {
   Activity,
   ArrowUpRight,
 } from "lucide-react";
-import { useApp } from "../context/AppContext.jsx";
+import { useApp } from "../hooks/useApp.js";
 import { useResource } from "../hooks/useResource.js";
 import {
   Badge,
-  dateLabel,
   EmptyState,
   PageHeading,
   ResourceState,
 } from "../components/ui.jsx";
+import { dateLabel } from "../utils/formatters.js";
 
 export default function Dashboard() {
   const { user } = useApp();

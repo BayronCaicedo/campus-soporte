@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { ArrowRight, CheckCircle2, GraduationCap } from "lucide-react";
-import { Brand } from "../components/Layout.jsx";
+import { Brand } from "../components/Brand.jsx";
 import { ErrorMessage, Field } from "../components/ui.jsx";
-import { useApp } from "../context/AppContext.jsx";
+import { useApp } from "../hooks/useApp.js";
+import { validatePasswordConfirmation } from "../utils/validators.js";
 
 export default function Auth({ register = false }) {
   const { user, repository, refresh } = useApp();
@@ -18,8 +19,7 @@ export default function Auth({ register = false }) {
     const values = Object.fromEntries(new FormData(event.currentTarget));
     try {
       if (register) {
-        if (values.password !== values.confirmPassword)
-          throw new Error("Las contraseñas no coinciden.");
+        validatePasswordConfirmation(values.password, values.confirmPassword);
         await repository.register(values);
         await refresh("Cuenta creada. Ya puedes iniciar sesión.");
         navigate("/ingresar");

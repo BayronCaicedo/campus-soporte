@@ -1,7 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createRepository } from "../services/repository.js";
 
-const AppContext = createContext(null);
+import { AppContext } from "./appContext.js";
 const repository = createRepository(window.localStorage, window.sessionStorage);
 
 export function AppProvider({ children }) {
@@ -54,7 +54,4 @@ export function AppProvider({ children }) {
       {children}
     </AppContext.Provider>
   );
-}
-export function useApp() {
-  return useContext(AppContext);
 }

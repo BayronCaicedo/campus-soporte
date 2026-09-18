@@ -1,0 +1,139 @@
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #fff;
+}
+.auth-story {
+  background: var(--forest);
+  color: white;
+  padding: 45px 60px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.auth-story::after {
+  content: "";
+  position: absolute;
+  right: -160px;
+  bottom: -220px;
+  width: 600px;
+  height: 600px;
+  border: 1px solid #496b57;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 70px #244b4000,
+    0 0 0 71px #2c5345;
+  pointer-events: none;
+}
+.auth-story .brand-icon {
+  background: #315d4e;
+}
+.auth-message {
+  margin: auto 0;
+  padding: 60px 0;
+  position: relative;
+  z-index: 1;
+}
+.auth-message h1 {
+  font-size: clamp(30px, 3.7vw, 53px);
+  line-height: 1.25;
+  letter-spacing: -2px;
+  margin: 28px 0 20px;
+}
+.auth-message em {
+  font-style: normal;
+  color: var(--lime);
+}
+.auth-message > p {
+  color: #b5c9b8;
+  font-size: 15px;
+  max-width: 360px;
+}
+.auth-benefits {
+  margin-top: 37px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  color: #d1dfc9;
+  font-size: 13px;
+}
+.auth-benefits div {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.auth-benefits svg {
+  color: #b6d996;
+}
+.auth-footer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  color: #9cba9e;
+  margin-bottom: 0;
+  z-index: 1;
+}
+.auth-form-wrap {
+  padding: 55px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.auth-form {
+  width: 100%;
+  max-width: 385px;
+}
+.auth-form h2 {
+  font-size: 31px;
+  margin-bottom: 12px;
+  letter-spacing: -1.2px;
+}
+.auth-form .eyebrow {
+  font-size: 9px;
+}
+.auth-form form {
+  margin-top: 30px;
+}
+.auth-form .full {
+  margin-top: 8px;
+}
+.auth-switch {
+  text-align: center;
+  font-size: 12px;
+  color: #7d8c71;
+  margin: 25px 0;
+}
+.auth-switch a {
+  font-weight: 700;
+  color: #3c6539;
+}
+.demo-accounts {
+  background: #f5f7f0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 17px 19px;
+  font-size: 11px;
+}
+.demo-accounts strong {
+  color: #5b7549;
+  font-size: 11px;
+}
+.demo-accounts p {
+  line-height: 1.9;
+  margin: 9px 0 0;
+  color: #82916f;
+}
+.demo-accounts code {
+  font-size: 10px;
+  color: #5e7851;
+}
+.auth-disclaimer {
+  display: block;
+  font-size: 10px;
+  color: #8b997d;
+  margin-top: 19px;
+  text-align: center;
+}

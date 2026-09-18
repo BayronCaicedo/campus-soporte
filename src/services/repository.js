@@ -1,16 +1,12 @@
 import { createSeed, DEMO_PASSWORD } from "../data/seed.js";
-
-export const DATA_KEY = "campus-soporte-v1";
-export const SESSION_KEY = "campus-soporte-session";
-export const CATEGORIES = [
-  "Plataformas",
-  "Equipos",
-  "Conectividad",
-  "Cuentas",
-  "Otros",
-];
-export const STATUSES = ["Pendiente", "En proceso", "Resuelta"];
-export const PRIORITIES = ["Baja", "Media", "Alta"];
+import { DATA_KEY, SESSION_KEY } from "../config/constants.js";
+import {
+  clean,
+  validateUserFields,
+  validateAccessFields,
+  validateTicketFields,
+  validateStatus,
+} from "../utils/validators.js";
 
 // Demostración académica: el almacenamiento del navegador NO es una frontera de seguridad.
 // En el corte 3, el servidor validará la sesión, los permisos y las contraseñas.
@@ -26,13 +22,6 @@ async function hashPassword(password) {
 const publicUser = ({ passwordHash, ...user }) => user;
 const fail = (message) => {
   throw new Error(message);
-};
-const clean = (value) => String(value ?? "").trim();
-const validateText = (value, label, min, max) => {
-  const text = clean(value);
-  if (text.length < min || text.length > max)
-    fail(`${label}: escribe entre ${min} y ${max} caracteres.`);
-  return text;
 };
 
 export function createRepository(storage, sessionStorage) {
@@ -82,19 +71,10 @@ export function createRepository(storage, sessionStorage) {
     return { user, ticket };
   }
   async function userFields(input, db, id) {
-    const name = validateText(input.name, "Nombre", 3, 80);
-    const email = clean(input.email).toLowerCase();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 120)
-      fail("Escribe un correo válido.");
-    if (db.users.some((u) => u.email === email && u.id !== id))
+    const fields = validateUserFields(input, { requirePassword: !id });
+    if (db.users.some((u) => u.email === fields.email && u.id !== id))
       fail("Este correo ya está registrado.");
-    const fields = { name, email };
     if (!id || input.password) {
-      if (
-        String(input.password ?? "").length < 8 ||
-        String(input.password).length > 128
-      )
-        fail("La contraseña debe tener entre 8 y 128 caracteres.");
       fields.passwordHash = await hashPassword(input.password);
     }
     return fields;
@@ -164,8 +144,7 @@ export function createRepository(storage, sessionStorage) {
       const fields = await userFields(input, db, id);
       const role = user.role === "admin" ? input.role : target.role;
       const active = user.role === "admin" ? input.active : target.active;
-      if (!["admin", "student"].includes(role) || typeof active !== "boolean")
-        fail("Perfil o estado inválido.");
+      validateAccessFields(role, active);
       if (id === user.id && (role !== user.role || active !== user.active))
         fail(
           "No puedes cambiar tu propio perfil de acceso ni desactivar tu cuenta.",
@@ -219,29 +198,15 @@ export function createRepository(storage, sessionStorage) {
       const db = read();
       const user = actor(db);
       const existing = id ? ticketAccess(db, id, true).ticket : null;
-      const title = validateText(input.title, "Asunto", 5, 100);
-      const description = validateText(
-        input.description,
-        "Descripción",
-        15,
-        2000,
-      );
-      if (
-        !CATEGORIES.includes(input.category) ||
-        !PRIORITIES.includes(input.priority)
-      )
-        fail("Selecciona una categoría y una prioridad válidas.");
+      const fields = validateTicketFields(input);
       const status =
         user.role === "admin"
           ? input.status || "Pendiente"
           : existing?.status || "Pendiente";
-      if (!STATUSES.includes(status)) fail("Estado inválido.");
+      validateStatus(status);
       const saved = {
         id: id || `SOL-${crypto.randomUUID()}`,
-        title,
-        description,
-        category: input.category,
-        priority: input.priority,
+        ...fields,
         status,
         userId: existing?.userId || user.id,
         createdAt: existing?.createdAt || new Date().toISOString(),

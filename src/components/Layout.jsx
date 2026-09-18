@@ -10,21 +10,11 @@ import {
   ArrowUpRight,
   CheckCircle2,
 } from "lucide-react";
-import { useApp } from "../context/AppContext.jsx";
-import { roleLabel } from "./ui.jsx";
+import { useApp } from "../hooks/useApp.js";
+import { roleLabel } from "../utils/formatters.js";
 
-export function Brand() {
-  return (
-    <div className="brand">
-      <span className="brand-icon">
-        <GraduationCap size={26} />
-      </span>
-      <span>
-        campus<span className="brand-second">soporte</span>
-      </span>
-    </div>
-  );
-}
+import { Brand } from "./Brand.jsx";
+
 export default function Layout() {
   const { user, repository, refresh, notice } = useApp();
   const navigate = useNavigate();

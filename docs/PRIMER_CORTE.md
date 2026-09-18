@@ -88,24 +88,38 @@ La relación es de uno a muchos: un usuario puede registrar varias solicitudes y
 La interfaz se organiza en páginas. Estas reutilizan componentes visuales y utilizan un contexto para acceder a la sesión y al repositorio. El repositorio encapsula las operaciones sobre el almacenamiento del navegador.
 
 ```text
-Pantallas (pages)
-  ├─ Componentes compartidos (components)
-  └─ Contexto y carga (context / hooks)
-       └─ Repositorio (services)
-            └─ Datos ficticios + almacenamiento del navegador
+main.jsx → App.jsx → routes/AppRoutes.jsx
+  └─ pages/
+      ├─ tickets/ (listado, detalle, editor y formulario)
+      ├─ users/   (listado, detalle, editor y formulario)
+      └─ componentes compartidos + context / hooks
+          └─ services/repository.js
+              ├─ utils/validators.js + config/constants.js
+              └─ datos ficticios + almacenamiento del navegador
+
+styles/index.css → base, layout, dashboard, components, auth, responsive
 ```
 
 No se incorpora una API REST en este corte. La separación y el uso de operaciones asíncronas preparan el reemplazo del repositorio por un adaptador HTTP.
 
 ## 10. Relación con los contenidos del primer corte
 
-| Contenido | Implementación y forma de demostrarlo |
-| --- | --- |
-| Introducción al desarrollo con frameworks | Aplicación React con Vite; describir JSX y la composición de la interfaz |
-| Estructura y ciclo de vida de componentes | `useState`, `useEffect` y limpieza en `useResource`; explicar carga y desmontaje |
-| Estilización y diseño responsive | CSS con Grid, Flexbox y media queries; comparar vista amplia y móvil |
-| Gestión de rutas y navegación | React Router, rutas con `:id`, menú y control de acceso de demostración |
-| Construcción modular y reutilizable | `Field`, `Badge`, `PageHeading`, `ResourceState`, `ConfirmDialog` y formularios de creación/edición |
+| Contenido de aprendizaje | Evidencia verificable en el código | Demostración sugerida |
+| --- | --- | --- |
+| 1.1. Desarrollo con frameworks | [`main.jsx`](../src/main.jsx), [`App.jsx`](../src/App.jsx) y [`package.json`](../package.json) | Ejecutar la aplicación y explicar cómo React monta componentes mediante JSX; distinguir arranque de aplicación y mapa de rutas. |
+| 1.2. Estructura y ciclo de vida | [`useResource.js`](../src/hooks/useResource.js), [`AppContext.jsx`](../src/context/AppContext.jsx) y [`TicketList.jsx`](../src/pages/tickets/TicketList.jsx) | Cambiar la búsqueda y explicar `useState`; abrir un detalle por ID y explicar el efecto de carga y su limpieza. |
+| 1.3. Estilización y diseño responsive | [`styles/index.css`](../src/styles/index.css), [`layout.css`](../src/styles/layout.css) y [`responsive.css`](../src/styles/responsive.css) | Comparar computador y móvil: menú superior en pantalla pequeña, tarjetas en menos columnas y desplazamiento de tablas dentro de su contenedor. |
+| 1.4. Gestión de rutas y navegación | [`AppRoutes.jsx`](../src/routes/AppRoutes.jsx), [`ProtectedRoute.jsx`](../src/routes/ProtectedRoute.jsx) y [`TicketDetail.jsx`](../src/pages/tickets/TicketDetail.jsx) | Abrir listado, detalle y edición; mostrar el ID de la URL. Comparar acceso a Usuarios como administrador y estudiante. |
+| 1.5. Interfaz modular y reutilizable | [`ui.jsx`](../src/components/ui.jsx), [`UserForm.jsx`](../src/pages/users/UserForm.jsx), [`TicketForm.jsx`](../src/pages/tickets/TicketForm.jsx) y [`Brand.jsx`](../src/components/Brand.jsx) | Mostrar `Field` en ambos módulos, `Badge` en listado y detalle, y el mismo formulario al crear y editar. |
+
+### Evidencias adicionales de calidad
+
+- **Análisis estático:** [`eslint.config.js`](../eslint.config.js) configura reglas para JavaScript, hooks y componentes. `npm run lint` exige cero advertencias.
+- **Validaciones compartidas:** [`validators.js`](../src/utils/validators.js) valida campos sin depender del navegador. El repositorio conserva la comprobación de permisos y de correos duplicados.
+- **Pruebas:** [`repository.test.js`](../tests/repository.test.js) comprueba 15 escenarios de datos y permisos; [`validators.test.js`](../tests/validators.test.js) añade 4 escenarios de límites, normalización y confirmación de contraseña. Se ejecutan con `npm test`.
+- **Reproducibilidad:** `pnpm-lock.yaml` registra las versiones; el README explica instalación, compilación y ejecución.
+
+Estas evidencias se relacionan con los contenidos compartidos del primer corte, pero no constituyen una rúbrica adicional ni garantizan una nota específica. La estructura conserva una separación por responsabilidades; no se presenta como una implementación completa de MVC.
 
 React permite componer las vistas y actualizar solo la interfaz que depende del estado. Para este caso, favorece compartir campos, formularios y estructura de navegación. Como contrapartida, se debe elegir e integrar una solución de rutas y organizar explícitamente el acceso a los datos. La elección responde a la experiencia previa del estudiante y al enfoque del curso; no se afirma que sea superior en todos los proyectos.
 

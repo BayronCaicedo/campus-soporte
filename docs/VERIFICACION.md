@@ -6,7 +6,8 @@
 | --- | --- |
 | Instalación de dependencias con pnpm y archivo de versiones | Correcta |
 | Compilación con Vite (`build --configLoader native`) | Correcta |
-| Pruebas automáticas del repositorio | 15 aprobadas, 0 fallidas |
+| ESLint con reglas de JavaScript, hooks y componentes | 0 errores, 0 advertencias |
+| Pruebas automáticas del repositorio y validadores | 19 aprobadas, 0 fallidas |
 | Abrir la versión compilada en navegador | Correcto |
 | Inicio de sesión como estudiante y administrador | Correcto |
 | Autorregistro desde el formulario público | Cuenta creada como estudiante |
@@ -40,12 +41,16 @@ Los casos y cuentas creados para las pruebas de interfaz fueron eliminados al fi
 13. Persistencia entre instancias del repositorio y finalización de sesión.
 14. Bloqueo de acceso a cuentas inactivas.
 15. Errores de almacenamiento sin sobrescribir datos dañados.
+16. Normalización de nombre y correo sin modificar la entrada original.
+17. Contraseña opcional al editar, obligatoria al crear, y límites de 8 a 128 caracteres.
+18. Confirmación de contraseña coincidente y rechazo de una diferente.
+19. Límites de longitud en solicitudes y rechazo de opciones desconocidas.
 
 Las pruebas del repositorio usan almacenamiento en memoria y no modifican los datos del navegador.
 
 ## Repetir antes de presentar
 
-- [ ] Ejecutar `pnpm test` y `pnpm build`.
+- [ ] Ejecutar `pnpm lint`, `pnpm test` y `pnpm build`.
 - [ ] Iniciar la aplicación o su vista previa.
 - [ ] Recorrer ambos perfiles siguiendo `SUSTENTACION.md`.
 - [ ] Crear datos ficticios nuevos para las acciones de eliminación.
@@ -57,6 +62,17 @@ Las pruebas del repositorio usan almacenamiento en memoria y no modifican los da
 - [ ] Confirmar con la rúbrica final si se requieren capturas, PDF, video o enlace remoto.
 
 ## Alcance de la verificación
+
+### Revisión de reorganización — 18 de septiembre de 2026
+
+- ESLint: sin errores ni advertencias; Prettier: formato correcto.
+- Pruebas automatizadas: 19 aprobadas, ninguna fallida; compilación de producción correcta.
+- Navegador, vista previa aislada en el puerto 5175: inicio y cierre de sesión, creación y edición de una solicitud ficticia, detalle de solicitud, listado y detalle de usuarios y carga del formulario de edición.
+- El acceso directo a usuarios desde el perfil estudiante muestra el aviso de sección exclusiva para administradores.
+- No se observaron errores ni advertencias de consola durante ese recorrido.
+- El CSS compilado conserva el mismo hash que antes de dividir las hojas de estilo (`index-vH2GmwVd.css`).
+
+Este recorrido complementa las pruebas anteriores; no implica que se haya repetido manualmente cada caso de la aplicación.
 
 Se verificó una demostración local, no un despliegue público ni una integración con API. El servidor de desarrollo encontró una restricción de lectura de dependencias en el entorno de trabajo; la aplicación compilada se probó mediante la vista previa. El proyecto incluye el código del servidor de desarrollo de Vite y las instrucciones normales para un entorno local con permisos de lectura.
 

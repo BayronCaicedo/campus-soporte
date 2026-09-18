@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createRepository, DATA_KEY } from "../src/services/repository.js";
+import { createRepository } from "../src/services/repository.js";
+import { DATA_KEY } from "../src/config/constants.js";
 
 function memoryStorage() {
   const values = new Map();

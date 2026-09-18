@@ -10,7 +10,7 @@ Ejecuta la aplicación siguiendo el README. Usa datos ficticios. Ten abiertas la
 2. **Autorregistro y acceso — 1 minuto.** Crea una cuenta ficticia. Señala que no hay selector de rol. Inicia sesión con esa cuenta.
 3. **Solicitudes — 2 minutos.** Crea una solicitud, vuelve al listado, búscala, abre su detalle por ID, edítala y recarga para mostrar persistencia. Elimina ese caso mediante la confirmación. Cierra sesión.
 4. **Administrador — 2 minutos.** Ingresa con `admin@campus.demo` y `Campus123!`. Muestra el menú Usuarios. Crea un usuario ficticio sin solicitudes, consúltalo, edítalo y elimínalo. Abre una solicitud y muestra el selector de estado.
-5. **Componentes y rutas — 1 a 2 minutos.** Muestra `Field` y su reutilización en formularios. Muestra las rutas con `:id` y `Protected` en `main.jsx`.
+5. **Componentes y rutas — 1 a 2 minutos.** Muestra `Field` en `components/ui.jsx` y su reutilización en `UserForm.jsx` y `TicketForm.jsx`. Muestra las rutas con `:id` en `routes/AppRoutes.jsx` y el control de acceso en `routes/ProtectedRoute.jsx`. Explica que `main.jsx` monta React y `App.jsx` organiza el arranque.
 6. **Diseño adaptable y alcance — 1 minuto.** Reduce el ancho del navegador y muestra cómo cambia el menú. Explica qué partes son simuladas y qué corresponde a los siguientes cortes.
 
 ## Conceptos que debes poder explicar
@@ -52,3 +52,12 @@ Ejecuta la aplicación siguiendo el README. Usa datos ficticios. Ten abiertas la
 ## Orden de estudio recomendado
 
 Comienza por `Dashboard.jsx`, identifica las props de `Badge`, sigue con el formulario de solicitudes y después revisa su llamada a `repository.saveTicket`. Finalmente estudia las rutas y el contexto. Haz un cambio pequeño, por ejemplo en un texto de ayuda, ejecútalo y explica su efecto antes de modificar reglas.
+
+## Demostrar los ajustes del primer corte
+
+- Abre `src/pages/tickets/TicketForm.jsx`: observa que el mismo formulario recibe una solicitud existente para editarla o funciona sin ella para crearla.
+- Abre `src/utils/validators.js`: identifica una función que recibe datos y devuelve un resultado o lanza un error; no necesita el navegador.
+- Abre `src/styles/responsive.css`: localiza la adaptación del menú para pantallas pequeñas.
+- Ejecuta `npm run lint`: explica que ESLint analiza el código y las reglas de los hooks.
+- Ejecuta `npm test`: explica que las 19 pruebas ejecutan situaciones y comparan resultados esperados, usando datos de prueba aislados.
+- Explica la diferencia: Prettier organiza el formato, ESLint analiza el código y los tests comprueban comportamientos concretos. Ninguno garantiza por sí solo la ausencia de todos los errores.

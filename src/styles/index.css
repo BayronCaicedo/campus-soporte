@@ -1,0 +1,7 @@
+/* El orden conserva la cascada: base, estructura, componentes y adaptaciones. */
+@import "./base.css";
+@import "./layout.css";
+@import "./dashboard.css";
+@import "./components.css";
+@import "./auth.css";
+@import "./responsive.css";

@@ -33,14 +33,19 @@ Todos los nombres, cuentas y casos iniciales son ficticios. El dominio de los co
 ## Comprobar y preparar la entrega
 
 ```sh
+pnpm lint
 pnpm test
 pnpm build
 pnpm preview
 ```
 
-- `test`: ejecuta 15 pruebas de operaciones, validaciones, permisos y almacenamiento.
+- `lint`: analiza JavaScript, componentes y hooks con ESLint; debe terminar sin errores ni advertencias.
+- `test`: ejecuta 19 pruebas (15 del repositorio y 4 de los validadores separados).
 - `build`: genera la aplicación compilada en `dist/`.
 - `preview`: sirve la versión compilada; abre la dirección que indique la terminal.
+- `format:check`: comprueba el formato con Prettier; `format` aplica el formato.
+
+Con npm, los comandos equivalentes son `npm run lint`, `npm test`, `npm run build` y `npm run preview`.
 
 En el entorno restringido utilizado para preparar la entrega, la compilación y la vista previa funcionan. El servidor de desarrollo encontró una restricción de lectura durante la optimización de dependencias. Si ocurre en ese mismo entorno, utiliza `pnpm build` y `pnpm preview`; después de cambiar código, vuelve a compilar y recarga la página.
 
@@ -57,16 +62,20 @@ En el entorno restringido utilizado para preparar la entrega, la compilación y 
 
 ## Cómo estudiar el código
 
-1. `src/main.jsx`: inicio de React y mapa de rutas. `HashRouter` permite servir la aplicación como archivos estáticos sin configurar redirecciones en el servidor.
-2. `src/components/Layout.jsx`: estructura compartida, menú y cierre de sesión.
-3. `src/pages/Dashboard.jsx`: composición de componentes y datos derivados.
-4. `src/pages/Tickets.jsx`: ciclo completo de solicitudes; un formulario sirve para crear y editar.
-5. `src/pages/Users.jsx` y `src/pages/Auth.jsx`: administración, perfil personal y acceso.
-6. `src/components/ui.jsx`: campos, encabezados, etiquetas, estados y confirmación reutilizables.
-7. `src/context/AppContext.jsx`: sesión y notificaciones compartidas entre pantallas.
-8. `src/hooks/useResource.js`: carga de información con `useEffect` y limpieza al abandonar la pantalla.
-9. `src/services/repository.js`: operaciones y reglas; será el punto de reemplazo para la API del segundo corte.
-10. `src/data/seed.js` y `src/styles.css`: datos ficticios y estilos responsive.
+1. `src/main.jsx`: monta React, el enrutador y el proveedor del contexto. No contiene pantallas ni declaraciones de rutas.
+2. `src/App.jsx`: muestra la carga inicial, los errores de arranque y las rutas de la aplicación.
+3. `src/routes/AppRoutes.jsx` y `ProtectedRoute.jsx`: mapa de rutas y control de acceso simulado. `HashRouter` permite servir la aplicación como archivos estáticos sin configurar redirecciones en el servidor.
+4. `src/components/Layout.jsx` y `Brand.jsx`: estructura compartida y marca reutilizada también en el acceso.
+5. `src/pages/tickets/`: `TicketList`, `TicketDetail`, `TicketEditor` y `TicketForm`, cada uno en su propio archivo. El formulario sirve para crear y editar.
+6. `src/pages/users/`: la misma separación para usuarios; `src/pages/Auth.jsx` contiene acceso y autorregistro, y `Dashboard.jsx` la vista general.
+7. `src/components/ui.jsx`: campos, encabezados, etiquetas, estados y confirmación reutilizables.
+8. `src/context/AppContext.jsx`, `src/context/appContext.js` y `src/hooks/useApp.js`: proveedor, definición del contexto y hook para consumirlo. Comparten la sesión y las notificaciones.
+9. `src/hooks/useResource.js`: carga con `useEffect`, estado de petición actual y limpieza al abandonar la pantalla.
+10. `src/utils/validators.js`: validaciones puras de campos; `formatters.js`: presentación de fechas y perfiles. `src/config/constants.js` define categorías, estados y claves de almacenamiento.
+11. `src/services/repository.js`: operaciones, permisos y acceso al almacenamiento; utiliza los validadores compartidos. `src/data/seed.js` contiene los datos iniciales.
+12. `src/styles/index.css`: importa, en orden, `base`, `layout`, `dashboard`, `components`, `auth` y `responsive`. La separación conserva el diseño.
+
+La estructura separa responsabilidades para este corte; no pretende implementar todavía el MVC completo de la referencia del profesor.
 
 Las funciones del repositorio devuelven promesas desde este corte. Esto facilita sustituir su implementación por peticiones HTTP conservando la forma en que las pantallas solicitan datos.
 
