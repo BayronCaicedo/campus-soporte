@@ -32,6 +32,5 @@ No abras `index.html` con doble clic: React necesita el servidor local.
 ## Guías de la entrega
 
 - [Organización MVC y pruebas](docs/ARQUITECTURA_MVC.md)
-- [Guion de cuatro minutos](docs/GUION_VIDEO_MVC.md)
 - [Comandos para Windows](docs/EJECUCION_WINDOWS.md)
 - [Informe del primer corte](docs/PRIMER_CORTE.md)
