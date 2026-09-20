@@ -7,7 +7,7 @@
 | Instalación de dependencias con pnpm y archivo de versiones | Correcta |
 | Compilación con Vite (`build --configLoader native`) | Correcta |
 | ESLint con reglas de JavaScript, hooks y componentes | 0 errores, 0 advertencias |
-| Pruebas automáticas del repositorio y validadores | 19 aprobadas, 0 fallidas |
+| Pruebas automáticas de modelos, validadores y controladores MVC | 22 aprobadas, 0 fallidas |
 | Abrir la versión compilada en navegador | Correcto |
 | Inicio de sesión como estudiante y administrador | Correcto |
 | Autorregistro desde el formulario público | Cuenta creada como estudiante |
@@ -77,3 +77,11 @@ Este recorrido complementa las pruebas anteriores; no implica que se haya repeti
 Se verificó una demostración local, no un despliegue público ni una integración con API. El servidor de desarrollo encontró una restricción de lectura de dependencias en el entorno de trabajo; la aplicación compilada se probó mediante la vista previa. El proyecto incluye el código del servidor de desarrollo de Vite y las instrucciones normales para un entorno local con permisos de lectura.
 
 No se atribuyen a este prototipo autenticación segura, pruebas de backend o persistencia remota: corresponden a los siguientes cortes.
+
+## Migración MVC — 20 de septiembre de 2026
+
+Se conservan los 15 escenarios de reglas, ahora en `frontend/tests/models.test.js`, y los 4 de validadores. Se añaden 3 escenarios en `controllers.test.js`: confirmación y registro sin escalada de perfil, ciclo completo de solicitudes con mensajes y permisos/CRUD de usuarios a través de las capas MVC. Total: 22 pruebas aprobadas. Los comandos se ejecutan desde `frontend/`.
+
+Las verificaciones de navegador anteriores describen la versión previa a la migración. Para MVC se comprobó en una vista previa aislada (puerto 5176): inicio y cierre de sesión, panel del estudiante, creación y edición de solicitud, detalle y mensajes de éxito, bloqueo de la ruta Usuarios para estudiantes, sesión administrativa y creación/detalle de un usuario ficticio. No se observaron errores ni advertencias de consola en ese recorrido. Las eliminaciones y demás reglas se cubrieron con las pruebas automatizadas; no se repitieron todos los casos manuales.
+
+ESLint terminó sin errores ni advertencias y Vite generó `frontend/dist` correctamente. El CSS compilado conserva el hash `index-vH2GmwVd.css`, igual a la versión anterior.

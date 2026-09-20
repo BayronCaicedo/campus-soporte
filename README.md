@@ -5,7 +5,7 @@ Front-end en React con dos módulos (usuarios y solicitudes), dos perfiles (admi
 
 ## Ejecutar el proyecto
 
-Requisito: Node.js 22.12 o superior. Abre una terminal en esta carpeta.
+Requisito: Node.js 22.12 o superior. Abre una terminal en la raíz del repositorio y entra primero a `frontend` con `cd frontend`. Todos los comandos de npm/pnpm de este documento se ejecutan allí.
 
 La instalación verificada utiliza pnpm y el archivo de versiones `pnpm-lock.yaml`:
 
@@ -40,7 +40,7 @@ pnpm preview
 ```
 
 - `lint`: analiza JavaScript, componentes y hooks con ESLint; debe terminar sin errores ni advertencias.
-- `test`: ejecuta 19 pruebas (15 del repositorio y 4 de los validadores separados).
+- `test`: ejecuta 22 pruebas (15 de modelos, 4 de validadores y 3 de integración MVC).
 - `build`: genera la aplicación compilada en `dist/`.
 - `preview`: sirve la versión compilada; abre la dirección que indique la terminal.
 - `format:check`: comprueba el formato con Prettier; `format` aplica el formato.
@@ -60,24 +60,46 @@ En el entorno restringido utilizado para preparar la entrega, la compilación y 
 - Diseño adaptable, etiquetas de formulario, foco visible y diálogo accesible.
 - Persistencia local, estados de carga, errores y mensajes de confirmación.
 
-## Cómo estudiar el código
+## Organización MVC y orden de estudio
 
-1. `src/main.jsx`: monta React, el enrutador y el proveedor del contexto. No contiene pantallas ni declaraciones de rutas.
-2. `src/App.jsx`: muestra la carga inicial, los errores de arranque y las rutas de la aplicación.
-3. `src/routes/AppRoutes.jsx` y `ProtectedRoute.jsx`: mapa de rutas y control de acceso simulado. `HashRouter` permite servir la aplicación como archivos estáticos sin configurar redirecciones en el servidor.
-4. `src/components/Layout.jsx` y `Brand.jsx`: estructura compartida y marca reutilizada también en el acceso.
-5. `src/pages/tickets/`: `TicketList`, `TicketDetail`, `TicketEditor` y `TicketForm`, cada uno en su propio archivo. El formulario sirve para crear y editar.
-6. `src/pages/users/`: la misma separación para usuarios; `src/pages/Auth.jsx` contiene acceso y autorregistro, y `Dashboard.jsx` la vista general.
-7. `src/components/ui.jsx`: campos, encabezados, etiquetas, estados y confirmación reutilizables.
-8. `src/context/AppContext.jsx`, `src/context/appContext.js` y `src/hooks/useApp.js`: proveedor, definición del contexto y hook para consumirlo. Comparten la sesión y las notificaciones.
-9. `src/hooks/useResource.js`: carga con `useEffect`, estado de petición actual y limpieza al abandonar la pantalla.
-10. `src/utils/validators.js`: validaciones puras de campos; `formatters.js`: presentación de fechas y perfiles. `src/config/constants.js` define categorías, estados y claves de almacenamiento.
-11. `src/services/repository.js`: operaciones, permisos y acceso al almacenamiento; utiliza los validadores compartidos. `src/data/seed.js` contiene los datos iniciales.
-12. `src/styles/index.css`: importa, en orden, `base`, `layout`, `dashboard`, `components`, `auth` y `responsive`. La separación conserva el diseño.
+```text
+campus-soporte/
+├── docs/                   Informe, verificación y guion
+└── frontend/
+    ├── public/
+    ├── tests/              Modelos, controladores y validadores
+    ├── package.json
+    └── src/
+        ├── views/          auth, dashboard, users, tickets, common, layouts
+        ├── hooks/          Estado y conexión de las vistas con controladores
+        ├── controllers/    AuthController, UserController, TicketController
+        ├── models/         AuthModel, UserModel, TicketModel y reglas comunes
+        ├── services/       storageService: lectura, escritura y sesión local
+        ├── config/         Constantes y composición de dependencias
+        ├── context/        Sesión, avisos y actualización compartida
+        ├── routes/         Navegación y acceso por perfil
+        ├── data/           Datos ficticios iniciales
+        ├── styles/         CSS modular y adaptable
+        ├── utils/          Validadores y formato
+        ├── App.jsx
+        └── main.jsx
+```
 
-La estructura separa responsabilidades para este corte; no pretende implementar todavía el MVC completo de la referencia del profesor.
+Recorrido de guardado: `TicketForm → useActions → TicketController → TicketModel → storageService`.
 
-Las funciones del repositorio devuelven promesas desde este corte. Esto facilita sustituir su implementación por peticiones HTTP conservando la forma en que las pantallas solicitan datos.
+1. La vista recoge el formulario y controla carga, errores y navegación.
+2. El hook llama al controlador y actualiza el contexto tras una operación correcta.
+3. El controlador coordina el caso de uso y devuelve `{ data, message }`; los errores se propagan a la vista. En el registro comprueba además la confirmación de contraseña.
+4. El modelo aplica validación, propiedad del registro, permisos y reglas del negocio.
+5. El servicio solo lee y escribe datos y la referencia de sesión. No contiene reglas de perfiles.
+
+Las consultas pasan por `useResource` y los controladores. `config/createApplication.js` conecta las capas mediante dependencias inyectadas; las pruebas utilizan almacenamiento en memoria.
+
+Se sigue la separación MVC del ejemplo del profesor con funciones y promesas, en lugar de clases estáticas y callbacks. `routes` y `context` son apoyos de React; no sustituyen las capas MVC. El panel calcula resúmenes sobre solicitudes ya autorizadas, por lo que no necesita un modelo propio en esta entrega.
+
+No se crean carpetas vacías de backend ni se incorpora HTTP o JWT simulado: el alcance sigue siendo el primer corte. En el segundo corte se adaptará el acceso a datos para consumir una API.
+
+Guía para grabar: [Guion MVC de cuatro minutos](docs/GUION_VIDEO_MVC.md). Comandos para este computador: [Ejecución local](docs/EJECUCION_WINDOWS.md).
 
 ## Reglas de la demostración
 

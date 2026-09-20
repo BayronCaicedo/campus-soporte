@@ -25,11 +25,11 @@ Ejecuta la aplicación siguiendo el README. Usa datos ficticios. Ten abiertas la
 
 **Contexto:** comparte información sin pasarla manualmente por todos los niveles de componentes. `AppContext` centraliza la sesión simulada y las notificaciones.
 
-**Ruta:** relaciona una dirección con una pantalla. En `/solicitudes/:id`, `useParams` obtiene el identificador que se consulta en el repositorio.
+**Ruta:** relaciona una dirección con una pantalla. En `/solicitudes/:id`, `useParams` obtiene el identificador que se consulta mediante el controlador y el modelo.
 
 **CRUD:** crear, consultar, actualizar y eliminar. Consultar todos y consultar por ID son dos funcionalidades explícitas del requisito.
 
-**Repositorio:** agrupa las operaciones de datos. Hoy utiliza almacenamiento local; en el siguiente corte sus funciones realizarán peticiones a una API.
+**MVC:** las vistas muestran, los controladores coordinan y los modelos aplican reglas. El servicio guarda los datos y los hooks conectan el flujo con React.
 
 **Diseño responsive:** adapta la estructura al ancho disponible. El menú lateral pasa a la parte superior en móvil, las tarjetas cambian de columnas y las tablas se desplazan dentro de su contenedor.
 
@@ -47,17 +47,21 @@ Ejecuta la aplicación siguiendo el README. Usa datos ficticios. Ten abiertas la
 
 **¿Qué pasa al recargar?** Los datos se conservan en `localStorage`. La sesión simulada permanece en la pestaña mediante `sessionStorage` hasta cerrar sesión o según la restauración de pestañas del navegador.
 
-**¿Qué cambiará al consumir una API?** La implementación del repositorio y el tratamiento de errores de red. Las pantallas ya esperan operaciones asíncronas, lo que facilita esa transición.
+**¿Qué cambiará al consumir una API?** El acceso a datos de los modelos y servicios, junto con el tratamiento de errores de red. Las pantallas ya esperan operaciones asíncronas, lo que facilita esa transición.
 
 ## Orden de estudio recomendado
 
-Comienza por `Dashboard.jsx`, identifica las props de `Badge`, sigue con el formulario de solicitudes y después revisa su llamada a `repository.saveTicket`. Finalmente estudia las rutas y el contexto. Haz un cambio pequeño, por ejemplo en un texto de ayuda, ejecútalo y explica su efecto antes de modificar reglas.
+Comienza por `Dashboard.jsx`, identifica las props de `Badge`, sigue con el formulario de solicitudes y después revisa su llamada a `actions.saveTicket`. Finalmente estudia las rutas y el contexto. Haz un cambio pequeño, por ejemplo en un texto de ayuda, ejecútalo y explica su efecto antes de modificar reglas.
 
 ## Demostrar los ajustes del primer corte
 
-- Abre `src/pages/tickets/TicketForm.jsx`: observa que el mismo formulario recibe una solicitud existente para editarla o funciona sin ella para crearla.
-- Abre `src/utils/validators.js`: identifica una función que recibe datos y devuelve un resultado o lanza un error; no necesita el navegador.
-- Abre `src/styles/responsive.css`: localiza la adaptación del menú para pantallas pequeñas.
+- Abre `frontend/src/views/tickets/TicketForm.jsx`: observa que el mismo formulario recibe una solicitud existente para editarla o funciona sin ella para crearla.
+- Abre `frontend/src/utils/validators.js`: identifica una función que recibe datos y devuelve un resultado o lanza un error; no necesita el navegador.
+- Abre `frontend/src/styles/responsive.css`: localiza la adaptación del menú para pantallas pequeñas.
 - Ejecuta `npm run lint`: explica que ESLint analiza el código y las reglas de los hooks.
-- Ejecuta `npm test`: explica que las 19 pruebas ejecutan situaciones y comparan resultados esperados, usando datos de prueba aislados.
+- Ejecuta `npm test`: explica que las 22 pruebas ejecutan situaciones y comparan resultados esperados, usando datos de prueba aislados.
 - Explica la diferencia: Prettier organiza el formato, ESLint analiza el código y los tests comprueban comportamientos concretos. Ninguno garantiza por sí solo la ausencia de todos los errores.
+
+## Guion vigente
+
+Usa [GUION_VIDEO_MVC.md](GUION_VIDEO_MVC.md) y ejecuta los comandos desde `frontend/`. El archivo anterior `repository.js` fue separado en modelos y servicio; ya no existe.

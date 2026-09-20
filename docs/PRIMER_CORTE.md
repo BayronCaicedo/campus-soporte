@@ -83,43 +83,38 @@ Las rutas se muestran sin el prefijo `#` que utiliza la aplicación.
 
 La relación es de uno a muchos: un usuario puede registrar varias solicitudes y cada solicitud pertenece a un usuario. El nombre del solicitante se obtiene a partir de su ID al consultar los casos. Las contraseñas y su representación local no se incluyen en los objetos entregados a las pantallas de consulta.
 
-## 9. Estructura del front-end
+## 9. Estructura MVC del front-end
 
-La interfaz se organiza en páginas. Estas reutilizan componentes visuales y utilizan un contexto para acceder a la sesión y al repositorio. El repositorio encapsula las operaciones sobre el almacenamiento del navegador.
+La aplicación está en `frontend/` y sigue el recorrido:
 
 ```text
-main.jsx → App.jsx → routes/AppRoutes.jsx
-  └─ pages/
-      ├─ tickets/ (listado, detalle, editor y formulario)
-      ├─ users/   (listado, detalle, editor y formulario)
-      └─ componentes compartidos + context / hooks
-          └─ services/repository.js
-              ├─ utils/validators.js + config/constants.js
-              └─ datos ficticios + almacenamiento del navegador
-
-styles/index.css → base, layout, dashboard, components, auth, responsive
+views → hooks → controllers → models → services/storageService
 ```
 
-No se incorpora una API REST en este corte. La separación y el uso de operaciones asíncronas preparan el reemplazo del repositorio por un adaptador HTTP.
+Las vistas contienen JSX y eventos de interfaz. Los hooks conectan las operaciones con el estado de React. Los controladores coordinan casos de uso y mensajes. Los modelos validan y aplican reglas de cuentas, permisos y solicitudes; el servicio conserva los datos locales y la sesión.
+
+`config/createApplication.js` compone las dependencias. `context` comparte sesión y avisos; `routes` organiza navegación; `styles` y `utils` conservan estilos y funciones reutilizables. Se usan funciones y promesas, manteniendo las responsabilidades del ejemplo MVC del profesor sin exigir clases estáticas.
+
+No hay API REST en este corte. Se mantienen las claves y el formato de almacenamiento existentes; conservar navegador, dirección y puerto permite conservar los datos de demostración.
 
 ## 10. Relación con los contenidos del primer corte
 
 | Contenido de aprendizaje | Evidencia verificable en el código | Demostración sugerida |
 | --- | --- | --- |
-| 1.1. Desarrollo con frameworks | [`main.jsx`](../src/main.jsx), [`App.jsx`](../src/App.jsx) y [`package.json`](../package.json) | Ejecutar la aplicación y explicar cómo React monta componentes mediante JSX; distinguir arranque de aplicación y mapa de rutas. |
-| 1.2. Estructura y ciclo de vida | [`useResource.js`](../src/hooks/useResource.js), [`AppContext.jsx`](../src/context/AppContext.jsx) y [`TicketList.jsx`](../src/pages/tickets/TicketList.jsx) | Cambiar la búsqueda y explicar `useState`; abrir un detalle por ID y explicar el efecto de carga y su limpieza. |
-| 1.3. Estilización y diseño responsive | [`styles/index.css`](../src/styles/index.css), [`layout.css`](../src/styles/layout.css) y [`responsive.css`](../src/styles/responsive.css) | Comparar computador y móvil: menú superior en pantalla pequeña, tarjetas en menos columnas y desplazamiento de tablas dentro de su contenedor. |
-| 1.4. Gestión de rutas y navegación | [`AppRoutes.jsx`](../src/routes/AppRoutes.jsx), [`ProtectedRoute.jsx`](../src/routes/ProtectedRoute.jsx) y [`TicketDetail.jsx`](../src/pages/tickets/TicketDetail.jsx) | Abrir listado, detalle y edición; mostrar el ID de la URL. Comparar acceso a Usuarios como administrador y estudiante. |
-| 1.5. Interfaz modular y reutilizable | [`ui.jsx`](../src/components/ui.jsx), [`UserForm.jsx`](../src/pages/users/UserForm.jsx), [`TicketForm.jsx`](../src/pages/tickets/TicketForm.jsx) y [`Brand.jsx`](../src/components/Brand.jsx) | Mostrar `Field` en ambos módulos, `Badge` en listado y detalle, y el mismo formulario al crear y editar. |
+| 1.1. Desarrollo con frameworks | [`main.jsx`](../frontend/src/main.jsx), [`App.jsx`](../frontend/src/App.jsx) y [`package.json`](../frontend/package.json) | Ejecutar la aplicación y explicar cómo React monta componentes mediante JSX; distinguir arranque de aplicación y mapa de rutas. |
+| 1.2. Estructura y ciclo de vida | [`useResource.js`](../frontend/src/hooks/useResource.js), [`AppContext.jsx`](../frontend/src/context/AppContext.jsx) y [`TicketList.jsx`](../frontend/src/views/tickets/TicketList.jsx) | Cambiar la búsqueda y explicar `useState`; abrir un detalle por ID y explicar el efecto de carga y su limpieza. |
+| 1.3. Estilización y diseño responsive | [`styles/index.css`](../frontend/src/styles/index.css), [`layout.css`](../frontend/src/styles/layout.css) y [`responsive.css`](../frontend/src/styles/responsive.css) | Comparar computador y móvil: menú superior en pantalla pequeña, tarjetas en menos columnas y desplazamiento de tablas dentro de su contenedor. |
+| 1.4. Gestión de rutas y navegación | [`AppRoutes.jsx`](../frontend/src/routes/AppRoutes.jsx), [`ProtectedRoute.jsx`](../frontend/src/routes/ProtectedRoute.jsx) y [`TicketDetail.jsx`](../frontend/src/views/tickets/TicketDetail.jsx) | Abrir listado, detalle y edición; mostrar el ID de la URL. Comparar acceso a Usuarios como administrador y estudiante. |
+| 1.5. Interfaz modular y reutilizable | [`ui.jsx`](../frontend/src/views/common/ui.jsx), [`UserForm.jsx`](../frontend/src/views/users/UserForm.jsx), [`TicketForm.jsx`](../frontend/src/views/tickets/TicketForm.jsx) y [`Brand.jsx`](../frontend/src/views/common/Brand.jsx) | Mostrar `Field` en ambos módulos, `Badge` en listado y detalle, y el mismo formulario al crear y editar. |
 
 ### Evidencias adicionales de calidad
 
-- **Análisis estático:** [`eslint.config.js`](../eslint.config.js) configura reglas para JavaScript, hooks y componentes. `npm run lint` exige cero advertencias.
-- **Validaciones compartidas:** [`validators.js`](../src/utils/validators.js) valida campos sin depender del navegador. El repositorio conserva la comprobación de permisos y de correos duplicados.
-- **Pruebas:** [`repository.test.js`](../tests/repository.test.js) comprueba 15 escenarios de datos y permisos; [`validators.test.js`](../tests/validators.test.js) añade 4 escenarios de límites, normalización y confirmación de contraseña. Se ejecutan con `npm test`.
+- **Análisis estático:** [`eslint.config.js`](../frontend/eslint.config.js) configura reglas para JavaScript, hooks y componentes. `npm run lint` exige cero advertencias.
+- **Validaciones compartidas:** [`validators.js`](../frontend/src/utils/validators.js) valida campos sin depender del navegador. Los modelos conservan la comprobación de permisos y de correos duplicados.
+- **Pruebas:** [`models.test.js`](../frontend/tests/models.test.js) comprueba 15 escenarios de datos y permisos; [`validators.test.js`](../frontend/tests/validators.test.js) añade 4 escenarios de límites, normalización y confirmación de contraseña. Además, `frontend/tests/controllers.test.js` comprueba 3 recorridos de integración MVC. Las 22 pruebas se ejecutan con `npm test` desde `frontend`.
 - **Reproducibilidad:** `pnpm-lock.yaml` registra las versiones; el README explica instalación, compilación y ejecución.
 
-Estas evidencias se relacionan con los contenidos compartidos del primer corte, pero no constituyen una rúbrica adicional ni garantizan una nota específica. La estructura conserva una separación por responsabilidades; no se presenta como una implementación completa de MVC.
+Estas evidencias se relacionan con los contenidos compartidos del primer corte, pero no constituyen una rúbrica adicional ni garantizan una nota específica. La estructura adopta MVC en React: vistas y hooks, controladores de casos de uso, modelos con reglas y servicio de almacenamiento local.
 
 React permite componer las vistas y actualizar solo la interfaz que depende del estado. Para este caso, favorece compartir campos, formularios y estructura de navegación. Como contrapartida, se debe elegir e integrar una solución de rutas y organizar explícitamente el acceso a los datos. La elección responde a la experiencia previa del estudiante y al enfoque del curso; no se afirma que sea superior en todos los proyectos.
 
