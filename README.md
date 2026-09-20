@@ -32,4 +32,3 @@ No abras `index.html` con doble clic: React necesita el servidor local.
 ## Documentación del proyecto
 
 - [Organización MVC y pruebas](docs/ARQUITECTURA_MVC.md)
-- [Informe del primer corte](docs/PRIMER_CORTE.md)
