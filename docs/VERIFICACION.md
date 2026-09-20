@@ -52,7 +52,7 @@ Las pruebas del repositorio usan almacenamiento en memoria y no modifican los da
 
 - [ ] Ejecutar `pnpm lint`, `pnpm test` y `pnpm build`.
 - [ ] Iniciar la aplicación o su vista previa.
-- [ ] Recorrer ambos perfiles siguiendo `SUSTENTACION.md`.
+- [ ] Recorrer las operaciones de ambos perfiles con datos ficticios.
 - [ ] Crear datos ficticios nuevos para las acciones de eliminación.
 - [ ] Confirmar que el estudiante no ve el menú de administración.
 - [ ] Cambiar un caso a “En proceso” como administrador y comprobar que su estudiante no puede editarlo.

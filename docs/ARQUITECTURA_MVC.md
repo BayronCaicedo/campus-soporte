@@ -64,7 +64,7 @@ En el entorno restringido utilizado para preparar la entrega, la compilación y 
 
 ```text
 campus-soporte/
-├── docs/                   Informe, verificación y guion
+├── docs/                   Informe, arquitectura y verificación
 └── frontend/
     ├── public/
     ├── tests/              Modelos, controladores y validadores
@@ -99,7 +99,6 @@ Se sigue la separación MVC del ejemplo del profesor con funciones y promesas, e
 
 No se crean carpetas vacías de backend ni se incorpora HTTP o JWT simulado: el alcance sigue siendo el primer corte. En el segundo corte se adaptará el acceso a datos para consumir una API.
 
-Guía para grabar: [Guion MVC de cuatro minutos](GUION_VIDEO_MVC.md). Comandos para este computador: [Ejecución local](EJECUCION_WINDOWS.md).
 
 ## Reglas de la demostración
 
@@ -124,7 +123,6 @@ Las fuentes visuales se cargan desde Google Fonts. Si no hay conexión se usa Ar
 ## Documentación de entrega
 
 - `docs/PRIMER_CORTE.md`: problema, objetivos, alcance, requisitos y relación con la rúbrica.
-- `docs/SUSTENTACION.md`: recorrido de demostración y conceptos para estudiar.
 - `docs/VERIFICACION.md`: comprobaciones ejecutadas y lista de comprobación manual.
 
 ## GitHub
