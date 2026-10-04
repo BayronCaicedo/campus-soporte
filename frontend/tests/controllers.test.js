@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createApplication } from "../src/config/createApplication.js";
+import { createStorageService } from "./helpers/storageService.js";
 
 function memory() {
   const data = new Map();
@@ -11,7 +12,7 @@ function memory() {
   };
 }
 async function setup() {
-  const app = createApplication(memory(), memory());
+  const app = createApplication(createStorageService(memory(), memory()));
   await app.controllers.initialize();
   return app.controllers;
 }

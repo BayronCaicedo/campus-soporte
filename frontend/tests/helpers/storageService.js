@@ -1,4 +1,7 @@
-import { DATA_KEY, SESSION_KEY } from "../config/constants.js";
+import { SESSION_KEY } from "../../src/config/constants.js";
+import { createSeed, DEMO_PASSWORD } from "../../src/data/seed.js";
+import { hashPassword } from "../../src/models/modelUtils.js";
+export const DATA_KEY = "campus-soporte-test";
 const storageError = (message) => {
   throw new Error(message);
 };
@@ -31,6 +34,27 @@ export function createStorageService(storage, sessionStorage) {
   }
 
   return {
+    async initialize() {
+      if (storage.getItem(DATA_KEY) === null)
+        write(createSeed(await hashPassword(DEMO_PASSWORD)));
+      return read();
+    },
+    get: (collection, id) => read()[collection].find((item) => item.id === id),
+    save(collection, value, id) {
+      const db = read();
+      if (id)
+        db[collection] = db[collection].map((item) =>
+          item.id === id ? value : item,
+        );
+      else db[collection].push(value);
+      write(db);
+      return value;
+    },
+    remove(collection, id) {
+      const db = read();
+      db[collection] = db[collection].filter((item) => item.id !== id);
+      write(db);
+    },
     read,
     write,
     isEmpty: () => storage.getItem(DATA_KEY) === null,

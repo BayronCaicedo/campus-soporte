@@ -1,5 +1,4 @@
-// Valores compartidos por formularios y operaciones de datos del primer corte.
-export const DATA_KEY = "campus-soporte-v1";
+// Valores compartidos por formularios y operaciones de datos.
 export const SESSION_KEY = "campus-soporte-session";
 export const CATEGORIES = [
   "Plataformas",

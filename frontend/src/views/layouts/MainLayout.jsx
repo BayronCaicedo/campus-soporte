@@ -112,14 +112,14 @@ export default function Layout() {
             <strong>{section}</strong>
           </span>
           <span className="demo-label">
-            <span className="online-dot" /> Demo académica · Corte 1
+            <span className="online-dot" /> Demo académica · Corte 2
           </span>
         </header>
         <main id="contenido" tabIndex="-1">
           <Outlet />
         </main>
         <footer>
-          Campus Soporte <span>Ingeniería Web II · Primer corte</span>
+          Campus Soporte <span>Ingeniería Web II · Segundo corte</span>
         </footer>
       </div>
       {notice && (

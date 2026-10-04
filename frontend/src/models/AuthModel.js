@@ -1,23 +1,23 @@
-import { createSeed, DEMO_PASSWORD } from "../data/seed.js";
 import { hashPassword, publicUser, fail } from "./modelUtils.js";
 import { clean } from "../utils/validators.js";
 export function createAuthModel(store, context) {
-  const { read, write } = store;
+  const { read } = store;
   const { userFields } = context;
   return {
     async initialize() {
-      if (store.isEmpty()) write(createSeed(await hashPassword(DEMO_PASSWORD)));
-      return read();
+      return store.initialize();
     },
     async currentUser() {
-      const db = read();
-      const user = db.users.find(
-        (u) => u.id === store.getSession() && u.active,
-      );
-      return user ? publicUser(user) : null;
+      if (!store.getSession()) return null;
+      const user = await store.get("users", store.getSession());
+      if (!user?.active) {
+        store.clearSession();
+        return null;
+      }
+      return publicUser(user);
     },
     async login(email, password) {
-      const db = read();
+      const db = await read();
       const hash = await hashPassword(password);
       const user = db.users.find(
         (u) =>
@@ -33,7 +33,7 @@ export function createAuthModel(store, context) {
       store.clearSession();
     },
     async register(input) {
-      const db = read();
+      const db = await read();
       const fields = await userFields(input, db);
       const user = {
         ...fields,
@@ -41,9 +41,7 @@ export function createAuthModel(store, context) {
         role: "student",
         active: true,
       };
-      db.users.push(user);
-      write(db);
-      return publicUser(user);
+      return publicUser(await store.save("users", user));
     },
   };
 }

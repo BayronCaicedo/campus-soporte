@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { createApplication } from "../config/createApplication.js";
+import { createApiService } from "../services/apiService.js";
 
 import { AppContext } from "./appContext.js";
 const { controllers } = createApplication(
-  window.localStorage,
-  window.sessionStorage,
+  createApiService(
+    import.meta.env.VITE_API_URL || "http://127.0.0.1:3001",
+    window.sessionStorage,
+  ),
 );
 
 export function AppProvider({ children }) {
@@ -36,10 +39,17 @@ export function AppProvider({ children }) {
     const timer = setTimeout(() => setNotice(""), 5000);
     return () => clearTimeout(timer);
   }, [notice]);
-  async function refresh(message) {
-    setUser(await controllers.currentUser());
+  async function refresh(message, authenticatedUser) {
+    try {
+      setUser(authenticatedUser || (await controllers.currentUser()));
+      if (message) setNotice(message);
+    } catch (error) {
+      // El guardado ya fue confirmado: no invitar a repetir un POST exitoso.
+      setNotice(
+        `${message || "Operación completada."} No se pudo refrescar la sesión: ${error.message}`,
+      );
+    }
     setRevision((value) => value + 1);
-    if (message) setNotice(message);
   }
   return (
     <AppContext.Provider

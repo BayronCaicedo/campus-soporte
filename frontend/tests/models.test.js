@@ -1,11 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createApplication } from "../src/config/createApplication.js";
+import { createStorageService, DATA_KEY } from "./helpers/storageService.js";
 const createRepository = (storage, session) => {
-  const { models } = createApplication(storage, session);
+  const { models } = createApplication(createStorageService(storage, session));
   return { ...models.auth, ...models.users, ...models.tickets };
 };
-import { DATA_KEY } from "../src/config/constants.js";
 
 function memoryStorage() {
   const values = new Map();

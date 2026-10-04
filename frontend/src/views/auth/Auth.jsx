@@ -147,8 +147,8 @@ export default function Auth({ register = false }) {
             </div>
           )}
           <small className="auth-disclaimer">
-            Primer corte: acceso simulado y datos guardados en este navegador.
-            Usa únicamente datos ficticios.
+            Segundo corte: acceso simulado y datos guardados mediante una API
+            REST. Usa únicamente datos ficticios.
           </small>
         </div>
       </section>

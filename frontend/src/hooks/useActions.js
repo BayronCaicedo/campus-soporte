@@ -4,7 +4,7 @@ export function useActions() {
   const { controllers, refresh } = useApp();
   async function run(method, ...args) {
     const result = await controllers[method](...args);
-    await refresh(result.message);
+    await refresh(result.message, method === "login" ? result.data : undefined);
     return result.data;
   }
   return {
